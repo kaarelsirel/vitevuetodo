@@ -2,41 +2,12 @@
 
 import { Plus } from "lucide-vue-next";
 import { ref } from "vue";
-import { Task } from "@types/index";
+import { Task } from "@/types/index";
 import TaskListItem from "./TaskListItem.vue";
+import { useTasksStore } from "../stores/tasks";
 
-defineProps<{
-  tasks: Task[]
-}>()
-
-const completeTask = (id: string) => {
-  const taskIndex = tasks.value.findIndex((task) => task.id === id);
-
-  if (taskIndex !== -1) {
-    tasks.value[taskIndex].isCompleted = true;
-  }
-}
-
-const restartTask = (id: string) => {
-  const taskIndex = tasks.value.findIndex((task) => task.id === id);
-
-  if (taskIndex !== -1) {
-    tasks.value[taskIndex].isCompleted = false;
-  }
-}
-
-const removeTask = (id: string) => {
-  const taskIndex = tasks.value.findIndex((task) => task.id === id);
-
-  if (taskIndex !== -1) {
-    tasks.value.splice(taskIndex, 1);
-  }
-}
-
-const addNewTask = (name: string) => {
-  tasks.value.push({'id': crypto.randomUUID(), 'name': name, 'isCompleted': false})
-  newTaskName.value = '';
-}
+const tasksStore = useTasksStore();
+let tasks: Task[] = tasksStore.tasks;
 
 let newTaskName = ref<string>('');
 </script>
@@ -51,7 +22,7 @@ let newTaskName = ref<string>('');
         <label class="input join-item">
           <input type="text" placeholder="What do you need to do?" required v-model="newTaskName" />
         </label>
-        <button class="btn join-item" @click="addNewTask(newTaskName)">
+        <button class="btn join-item" @click="tasksStore.add(newTaskName)">
           <Plus/>
         </button>
       </div>
@@ -61,9 +32,9 @@ let newTaskName = ref<string>('');
             v-for="task in tasks"
             :key="task.id"
             :task
-            @complete-task="completeTask"
-            @restart-task="restartTask"
-            @remove-task="removeTask"
+            @complete-task="tasksStore.complete(task.id)"
+            @restart-task="tasksStore.restart(task.id)"
+            @remove-task="tasksStore.remove(task.id)"
         />
         <h1 v-else>You have no tasks.</h1>
       </div>

@@ -3,3 +3,8 @@ export interface Task {
     name: string;
     isCompleted: boolean;
 }
+
+export interface TaskSearchResult {
+    task: Task;
+    index: string;
+}
