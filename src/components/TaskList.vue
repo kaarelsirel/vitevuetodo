@@ -1,15 +1,24 @@
 <script setup lang="ts">
-
-import { Plus } from "lucide-vue-next";
 import { ref } from "vue";
 import { Task } from "@/types/index";
+
 import TaskListItem from "./TaskListItem.vue";
 import { useTasksStore } from "../stores/tasks";
+import { Plus } from "lucide-vue-next";
 
 const tasksStore = useTasksStore();
 let tasks: Task[] = tasksStore.tasks;
 
 let newTaskName = ref<string>('');
+
+function addNewTask(name: string) {
+  if (name.length < 3) {
+    return alert("Name must be at least 3 characters.");
+  }
+
+  tasksStore.add(name);
+  newTaskName.value = '';
+}
 </script>
 
 <template>
@@ -22,7 +31,7 @@ let newTaskName = ref<string>('');
         <label class="input join-item">
           <input type="text" placeholder="What do you need to do?" required v-model="newTaskName" />
         </label>
-        <button class="btn join-item" @click="tasksStore.add(newTaskName)">
+        <button class="btn join-item" @click="addNewTask(newTaskName)">
           <Plus/>
         </button>
       </div>
