@@ -9,7 +9,6 @@ import CompletedTaskList from "./components/CompletedTaskList.vue";
 <template>
   <div class="flex justify-center items-center h-screen gap-6">
     <TaskList />
-    <CompletedTaskList />
   </div>
 </template>
 

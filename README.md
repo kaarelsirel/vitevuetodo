@@ -1,3 +1,3 @@
 # Vue 3 + TypeScript + Vite
 
-This project is just of learning.
+This todo list project is just for learning Vite, Vue, Git etc.

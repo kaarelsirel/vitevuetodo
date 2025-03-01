@@ -1,4 +1,4 @@
-import {ref} from "vue";
+import {ref, computed } from "vue";
 import { defineStore } from 'pinia'
 import { Task, TaskSearchResult } from "@/types/index";
 
@@ -9,6 +9,14 @@ export const useTasksStore = defineStore('tasks', () => {
         {'id': crypto.randomUUID(), 'name': 'Take out the trash', 'isCompleted': false},
         {'id': crypto.randomUUID(), 'name': 'Complete the tasks', 'isCompleted': true},
     ]);
+
+    let completedTasks: Task[] = computed(() => {
+        return tasks.value.filter((task: Task) => task.isCompleted);
+    })
+
+    let inProgressTasks: Task[] = computed(() => {
+        return tasks.value.filter((task: Task) => !task.isCompleted);
+    })
 
     function findById(id: string): TaskSearchResult | null {
         const index = tasks.value.findIndex((task) => task.id === id);
@@ -24,19 +32,11 @@ export const useTasksStore = defineStore('tasks', () => {
         tasks.value.push({'id': crypto.randomUUID(), 'name': name, 'isCompleted': false})
     }
 
-    function complete(id: string) {
-        let result: TaskSearchResult = findById(id);
+    function toggleTaskStatus(id: string) {
+        let result = findById(id);
 
         if (result) {
-            result.task.isCompleted = true
-        }
-    }
-
-    function restart(id: string) {
-        let result: TaskSearchResult = findById(id);
-
-        if (result) {
-            result.task.isCompleted = false
+            result.task.isCompleted = !result.task.isCompleted;
         }
     }
 
@@ -48,5 +48,5 @@ export const useTasksStore = defineStore('tasks', () => {
         }
     }
 
-    return { tasks, add, complete, restart, remove };
+    return { tasks, inProgressTasks, completedTasks, toggleTaskStatus, add, remove };
 })

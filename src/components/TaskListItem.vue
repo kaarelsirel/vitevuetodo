@@ -8,18 +8,16 @@ defineProps<{
 </script>
 
 <template>
-  <div class="card card-border bg-base-100 w-full">
+  <div class="card card-border border-base-300 bg-base-100 w-full">
     <div class="card-body">
       <div class="flex justify-between items-center">
         <h1 class="text-xl font-bold" :class="{ 'line-through': task.isCompleted }">{{ task.name }}</h1>
         <div class="flex gap-2">
-          <button v-if="task.isCompleted" class="btn btn-square btn-warning btn-sm" @click="$emit('restart-task', task.id)">
-            <RotateCcw />
+          <button class="btn btn-square btn-sm" :class="{'hover:btn-warning': task.isCompleted, 'hover:btn-success': !task.isCompleted }" @click="$emit('toggle-task', task.id)">
+            <RotateCcw v-if="task.isCompleted"/>
+            <Check v-else />
           </button>
-          <button v-else class="btn btn-square btn-success btn-sm" @click="$emit('complete-task', task.id)">
-            <Check />
-          </button>
-          <button class="btn btn-square btn-error btn-sm" @click="$emit('remove-task', task.id)">
+          <button class="btn btn-square hover:btn-error btn-sm" @click="$emit('remove-task', task.id)">
             <Trash />
           </button>
         </div>
