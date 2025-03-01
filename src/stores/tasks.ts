@@ -8,6 +8,7 @@ export const useTasksStore = defineStore('tasks', () => {
         {'id': crypto.randomUUID(), 'name': 'Water the flowers', 'isCompleted': false},
         {'id': crypto.randomUUID(), 'name': 'Take out the trash', 'isCompleted': false},
         {'id': crypto.randomUUID(), 'name': 'Complete the tasks', 'isCompleted': true},
+        {'id': crypto.randomUUID(), 'name': 'Buy ring for girlfriend', 'isCompleted': false},
     ]);
 
     let completedTasks: Task[] = computed(() => {
